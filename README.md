@@ -43,3 +43,32 @@ yarn add @react-navigation/stack
 
 para a navegacao iniciamos as configuracoes na pasta routes, depois
 no arquivo welcome chamamos useNavigation
+
+Dica: Para ajustar a parte do header em iphone, usamos uma lib para ajudar no view:
+```
+yarn add react-native-iphone-x-helper
+```
+
+biblioteca de requisicoes:
+```
+yarn add axios
+```
+
+biblioteca para simular api fake
+```
+yarn add -g json-server
+```
+
+executar o comando
+```
+json-server ./src/services/server.json --host 192.168.100.57 --port 3333
+```
+
+Para usar svg no expo, instalamos:
+```
+expo install react-native-svg
+```
+Entao usamos do proprio react-native-uri
+```
+<SvgFromUri uri={data.photo} />
+```
