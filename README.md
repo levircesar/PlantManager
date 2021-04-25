@@ -72,3 +72,9 @@ Entao usamos do proprio react-native-uri
 ```
 <SvgFromUri uri={data.photo} />
 ```
+
+
+Para animações no expo, usamos:
+```
+expo install lottie-react-native
+```

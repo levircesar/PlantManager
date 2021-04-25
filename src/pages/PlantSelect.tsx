@@ -9,6 +9,7 @@ import { EnviromentButton } from '../components/EnviromentButton';
 
 import { Header } from '../components/Header';
 import { PlantCardPrimary } from '../components/PlantCardPrimary';
+import { Load } from '../components/Load';
 
 import api from '../services/api';
 
@@ -36,6 +37,20 @@ interface PlantProps{
 export function PlantSelect(){
   const [enviroment, setEnviroment] = useState<EnviromentProps[]>([]);
   const [plants, setPlants] = useState<PlantProps[]>([]);
+  const [filteredPlants, setFilteredPlants] = useState<PlantProps[]>([]);
+  const [enviromentSelected, setEnviromentSelected] = useState('all');
+  const [loading, setLoading] = useState(true);
+
+  function handleEnviromentSelected(environment: string){ 
+    setEnviromentSelected(environment);
+    if(environment == 'all')
+      return setFilteredPlants(plants);
+
+    const filtered = plants.filter(plant => 
+      plant.environments.includes(environment)  
+    );
+    setFilteredPlants(filtered);
+  }
 
   useEffect(() => {
     async function fetchEnviroment(){
@@ -48,9 +63,10 @@ export function PlantSelect(){
         },
         ...data
       ]);
+      
     }
-
     fetchEnviroment();
+    
   }, []);
 
   useEffect(() => {
@@ -58,10 +74,14 @@ export function PlantSelect(){
       const { data } = await api
       .get('plants?_sort=name&_order=asc');
       setPlants(data);
+      setLoading(false);
     }
 
     fetchPlants();
   }, []);
+
+  if(loading)
+    return <Load/>
 
   return (
     <View style={styles.container}>
@@ -85,22 +105,24 @@ export function PlantSelect(){
           renderItem={ ({ item }) => (
             <EnviromentButton 
               title={item.title}
-              
+              active={item.key === enviromentSelected}
+              onPress={() => handleEnviromentSelected(item.key)}
             />
           )}
         />
       </View>
-
+      
       <View style={styles.plants}>
         <FlatList
-          data={plants}
+          showsVerticalScrollIndicator={false}
+          numColumns={2}
+          data={enviromentSelected == 'all'? plants:filteredPlants}
           renderItem={({item}) => (
             <PlantCardPrimary 
               data={item}
             />
           )}
-          showsVerticalScrollIndicator={false}
-          numColumns={2}
+          
         />
       </View>
       
