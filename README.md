@@ -78,3 +78,4 @@ Para animações no expo, usamos:
 ```
 expo install lottie-react-native
 ```
+O arquivo responsavel pela animação é o Load.tsx
